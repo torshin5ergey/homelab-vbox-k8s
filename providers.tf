@@ -1,0 +1,3 @@
+provider "virtualbox" {
+  # Configuration options
+}

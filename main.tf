@@ -1,12 +1,13 @@
 resource "virtualbox_vm" "node" {
   count  = var.node_count
   name   = data.external.node_names.result[tostring(count.index)]
-  image  = var.base_image_url
+  image  = var.base_image
   cpus   = 2
-  memory = "1024 MiB"
+  memory = "1024 mib"
 
   network_adapter {
-    type           = "bridged"
-    host_interface = ""
+    type           = "hostonly"
+    host_interface = "vboxnet0"
+    device         = "IntelPro1000MTServer"
   }
 }

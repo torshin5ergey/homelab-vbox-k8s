@@ -1,3 +1,3 @@
-provider "virtualbox" {
-  # Configuration options
-}
+provider "virtualbox" {}
+
+provider "external" {}

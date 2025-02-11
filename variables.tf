@@ -10,8 +10,13 @@ variable "node_count" {
   }
 }
 
-variable "base_image_url" {
-  description = "Base ova image URL"
+variable "base_image" {
+  description = "Base VM node images"
   type        = string
-  default     = "https://cloud-images.ubuntu.com/jammy/20250207/jammy-server-cloudimg-amd64.ova"
+}
+
+variable "host_interface" {
+  description = "Host interafce name"
+  type        = string
+  default     = "en0"
 }

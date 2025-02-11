@@ -1,4 +1,4 @@
-# vbox-k8s-homelab
+# homelab-vbox-k8s
 
 ```
 terraform init

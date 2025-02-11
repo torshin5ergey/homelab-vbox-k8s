@@ -1,3 +1,9 @@
-output "node_ips" {
-  value = [for vm in virtualbox_vm.node : vm.network_adapter[0].ipv4_address]
+output "vm_info" {
+  description = "Node names and IPs"
+  value = [
+    for vm in virtualbox_vm.node : {
+      name = vm.name
+      ip   = vm.network_adapter[0].ipv4_address
+    }
+  ]
 }

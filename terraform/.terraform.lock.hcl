@@ -9,6 +9,21 @@ provider "registry.terraform.io/hashicorp/external" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/local" {
+  version = "2.5.2"
+  hashes = [
+    "h1:AyjDavpTyerVRTVcQZXqMNmYeOKftDQVwvTKnIs+4h0=",
+  ]
+}
+
+provider "registry.terraform.io/hashicorp/tls" {
+  version     = "4.0.6"
+  constraints = "~> 4.0.6"
+  hashes = [
+    "h1:qCNvSq0J9fKF10TB3MGQj/0fXIQHdGJhW0NtWwuyq50=",
+  ]
+}
+
 provider "registry.terraform.io/terra-farm/virtualbox" {
   version     = "0.2.2-alpha.1"
   constraints = "0.2.2-alpha.1"

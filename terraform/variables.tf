@@ -14,3 +14,8 @@ variable "base_image" {
   description = "Base VM node images"
   type        = string
 }
+
+variable "username" {
+  description = "Default nodes user"
+  type        = string
+}

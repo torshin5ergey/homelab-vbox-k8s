@@ -23,5 +23,11 @@ Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOp
     terraform destroy
     ```
 
+## TODO
+
+- [ ] `generate_inventory.sh` script for Ansible
+- [ ] Change vagrant box to generic distro
+- [ ] Change vbox to another virtualisation tool
+
 ## Author
 Sergey Torshin [@torshin5ergey](https://github.com/torshin5ergey)

@@ -6,7 +6,7 @@ Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOp
 
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [Terraform](https://www.terraform.io/downloads.html)
-- ~~[Ansible]()~~
+- [Ansible]()
 - ~~[kubectl]()~~
 
 ## Instructions
@@ -18,7 +18,16 @@ Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOp
     ```
     terraform apply
     ```
-3. When you're done, you can remove all created resources:
+3. Set nodes IP to Ansible `inventory.ini`
+4. For now you need to login to every node and set `PasswordAuthentication yes` in `/etc/ssh/sshd_config` and add generated ssh keys with
+    ```
+    ssh-copy-id -i terraform/.ssh/id_rsa -o IdentitiesOnly=yes vagrant@ipaddress
+    ```
+5. Test Ansible connection
+    ```
+    ansible all -m ping -i ansible/inventory/inventory.ini
+    ```
+- When you're done, you can remove all created resources:
     ```
     terraform destroy
     ```
@@ -27,7 +36,8 @@ Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOp
 
 - [ ] `generate_inventory.sh` script for Ansible
 - [ ] Change vagrant box to generic distro
-- [ ] Change vbox to another virtualisation tool
+- [ ] Add another virtualisation tool
+- [ ] Fix ssh keys deploy
 
 ## Author
 Sergey Torshin [@torshin5ergey](https://github.com/torshin5ergey)

@@ -14,9 +14,3 @@ variable "base_image" {
   description = "Base VM node images"
   type        = string
 }
-
-variable "host_interface" {
-  description = "Host interafce name"
-  type        = string
-  default     = "en0"
-}

@@ -27,6 +27,10 @@ Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOp
     ```
     ansible all -m ping -i ansible/inventory/inventory.ini
     ```
+6. Check nodes Pytohn and pip version
+    ```
+    ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/01_check_python_pip.yaml
+    ```
 - When you're done, you can remove all created resources:
     ```
     terraform destroy

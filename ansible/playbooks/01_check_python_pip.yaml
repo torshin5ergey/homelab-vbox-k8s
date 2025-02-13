@@ -1,0 +1,21 @@
+- name: Check Python and pip versions
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Print Python versions
+      command: python3 --version
+      register: python_version
+      ignore_errors: yes
+
+    - name: Print pip version
+      command: pip3 --version
+      register: pip_version
+      ignore_errors: yes
+
+    - name: Print versions
+      debug:
+        msg: >
+          {
+            "python": "{{ python_version.stdout if python_version.rc == 0 else 'Not installed' }}",
+            "pip": "{{ pip_version.stdout if pip_version.rc == 0 else 'Not installed' }}"
+          }

@@ -6,8 +6,8 @@ resource "virtualbox_vm" "node" {
   memory = "1024 mib"
 
   network_adapter {
-    type           = "hostonly"
-    host_interface = "vboxnet0"
+    type           = "hostonly" # TODO make bridged
+    host_interface = "vboxnet0" # TODO wlp0s20f3
   }
 
   # provisioner "file" {

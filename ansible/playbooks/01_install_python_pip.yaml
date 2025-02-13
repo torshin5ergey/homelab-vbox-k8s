@@ -1,15 +1,25 @@
-- name: Check Python and pip versions
+- name: Install Python and pip
   hosts: all
+  become: true
   tasks:
-    - name: Print Python versions
+    - name: Install Python
+      apt:
+        name: python3
+        state: present
+        update_cache: true
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Verify Python installation
       command: python3 --version
       register: python_version
-      ignore_errors: true
 
-    - name: Print pip version
+    - name: Verify Pip installation
       command: pip3 --version
       register: pip_version
-      ignore_errors: true
 
     - name: Print versions
       debug:

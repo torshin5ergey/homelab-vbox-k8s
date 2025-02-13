@@ -4,12 +4,12 @@
     - name: Print Python versions
       command: python3 --version
       register: python_version
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Print pip version
       command: pip3 --version
       register: pip_version
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Print versions
       debug:

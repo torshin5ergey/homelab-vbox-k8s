@@ -2,6 +2,15 @@
 
 Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOps and Kubernetes practice.
 
+## TL;DR
+
+```
+git clone https://github.com/torshin5ergey/homelab-vbox-k8s.git
+cd homelab-vbox-k8s/
+chmod +x justinstall.sh
+./justinstall.sh
+```
+
 ## Used Tools
 
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -42,6 +51,7 @@ Automated local environment ~~Kubernetes cluster~~ setup in VirtualBox for DevOp
 - [ ] Change vagrant box to generic distro
 - [ ] Add another virtualisation tool
 - [ ] Fix ssh keys deploy
+- [ ] `justinstall.sh`
 
 ## Author
 Sergey Torshin [@torshin5ergey](https://github.com/torshin5ergey)

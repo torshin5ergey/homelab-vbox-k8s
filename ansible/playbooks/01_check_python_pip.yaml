@@ -1,6 +1,5 @@
 - name: Check Python and pip versions
   hosts: all
-  gather_facts: yes
   tasks:
     - name: Print Python versions
       command: python3 --version

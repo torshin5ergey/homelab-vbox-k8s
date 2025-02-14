@@ -8,17 +8,20 @@ on:
 jobs:
   validate:
     runs-on: self-hosted
-    steps:
-      - name: Actions checkout
-        uses: actions/checkout@v4
+    defaults:
+      run:
+        working-directory: terraform/
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        run: terraform fmt -check
+        continue-on-error: true   
 
       - name: Terraform init
-        run: terraform init
-        working-directory: terraform/
+        run: terraform init -input=false
 
       - name: Terraform validate
-        run: terraform validate
-        working-directory: terraform/
+        run: terraform validate -no-color

@@ -7,7 +7,7 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu:latest
+    runs-on: self-hosted
     steps:
       - name: Actions checkout
         uses: actions/checkout@v2

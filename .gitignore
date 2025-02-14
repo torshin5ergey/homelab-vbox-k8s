@@ -5,3 +5,6 @@
 terraform.tfstate
 terraform.tfstate.backup
 virtualbox.box
+
+# Python
+.venv

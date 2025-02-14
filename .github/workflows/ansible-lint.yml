@@ -1,0 +1,29 @@
+name: Ansible Lint
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  lint:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ansible/
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Install ansible-lint
+        run: |
+          python3 -m pip3 install --upgrade pip3
+          pip3 install ansible-lint
+
+      - name: Run ansible-lint
+        run: ansible-lint .

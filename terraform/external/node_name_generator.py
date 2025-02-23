@@ -6,7 +6,7 @@ import json
 
 def generate_node_names(count):
     node_names = {
-             "0": "node-master"
+            "0": "node-master"
     }
     for i in range(1, count):
         node_names[str(i)] = f"node-worker{i}"

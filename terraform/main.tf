@@ -3,7 +3,7 @@ resource "virtualbox_vm" "node" {
   name   = data.external.node_names.result[tostring(count.index)]
   image  = var.base_image
   cpus   = 2
-  memory = "1024 mib"
+  memory = "2048 mib"
 
   network_adapter {
     type           = "hostonly" # TODO make bridged

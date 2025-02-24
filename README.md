@@ -16,32 +16,55 @@ chmod +x justinstall.sh
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [Terraform](https://www.terraform.io/downloads.html)
 - [Ansible]()
+- [Kubespray](https://github.com/kubernetes-sigs/kubespray) (2.27.0)
 - ~~[kubectl]()~~
 
 ## Instructions
+
+### Terraform
+
 1. Initialize Terraform and download providers:
-    ```
+    ```bash
     terraform init
     ```
 2. Create the VM nodes:
-    ```
+    ```bash
     terraform apply
     ```
+
+### Ansible
+
 3. Set nodes IP to Ansible `inventory.ini`
 4. For now you need to login to every node and set `PasswordAuthentication yes` in `/etc/ssh/sshd_config` and add generated ssh keys with
-    ```
+    ```bash
     ssh-copy-id -i terraform/.ssh/id_rsa -o IdentitiesOnly=yes vagrant@ipaddress
     ```
 5. Test Ansible connection
-    ```
+    ```bash
     ansible all -m ping -i ansible/inventory/inventory.ini
     ```
 6. Check nodes Pytohn and pip version
-    ```
+    ```bash
     ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/01_check_python_pip.yaml
     ```
-- When you're done, you can remove all created resources:
+
+### Kubespray
+
+7. Download kubespray
+    ```bash
+    git clone https://github.com/kubernetes-sigs/kubespray.git
+    cd kubespray
     ```
+8. Install Kubespray requirements
+    ```bash
+    pip install -r requirements.txt
+    ```
+9. Run Kubespray cluster installation playbook
+    ```bash
+    ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini cluster.yml -b -v
+    ```
+- When you're done, you can remove all created resources:
+    ```bash
     terraform destroy
     ```
 

@@ -8,3 +8,6 @@ virtualbox.box
 
 # Python
 .venv
+
+# kubespray
+kubespray/

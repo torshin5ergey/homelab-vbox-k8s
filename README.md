@@ -63,6 +63,10 @@ chmod +x justinstall.sh
     ```bash
     ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini cluster.yml -b -v
     ```
+10. Get kubeconfig
+    ```bash
+    ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/02_get_kubeconfig.yaml
+    ```
 - When you're done, you can remove all created resources:
     ```bash
     terraform destroy

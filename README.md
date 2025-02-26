@@ -61,7 +61,7 @@ chmod +x justinstall.sh
     ```
 9. Run Kubespray cluster installation playbook
     ```bash
-    ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini cluster.yml -b -v
+    ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini cluster.yml -b -v @ansible/vars/kubespray/k8s-cluster.yml
     ```
 10. Get kubeconfig
     ```bash

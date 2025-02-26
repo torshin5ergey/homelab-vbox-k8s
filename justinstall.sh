@@ -5,6 +5,9 @@ terraform init
 terraform apply -auto-approve
 cd ..
 
+# Check python/pip versions
+ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
+
 # install k8s via kubespray
 git clone https://github.com/kubernetes-sigs/kubespray.git
 cd kubespray/

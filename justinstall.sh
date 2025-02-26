@@ -1,5 +1,6 @@
 set -e
 
+# Setup VM nodes
 cd terraform/
 terraform init
 terraform apply -auto-approve

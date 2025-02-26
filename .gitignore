@@ -10,4 +10,4 @@ virtualbox.box
 .venv
 
 # kubespray
-kubespray/
+/kubespray/

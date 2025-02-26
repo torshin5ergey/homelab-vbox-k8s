@@ -8,11 +8,11 @@ cd ..
 # Check python/pip versions
 ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
 
-# install k8s via kubespray
+# Install k8s via kubespray
 git clone https://github.com/kubernetes-sigs/kubespray.git
 cd kubespray/
 pip install -r requirements.txt
-## installing the cluster
+## Installing the cluster
 ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini cluster.yml -b -v
 ### Get kubeconfig
 cd ..

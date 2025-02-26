@@ -45,7 +45,7 @@ chmod +x justinstall.sh
     ```
 6. Check nodes Pytohn and pip version
     ```bash
-    ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/01_check_python_pip.yaml
+    ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
     ```
 
 ### Kubespray
@@ -65,7 +65,7 @@ chmod +x justinstall.sh
     ```
 10. Get kubeconfig
     ```bash
-    ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/02_get_kubeconfig.yaml
+    ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/get_kubeconfig.yaml
     ```
 - When you're done, you can remove all created resources:
     ```bash

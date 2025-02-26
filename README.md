@@ -43,7 +43,7 @@ chmod +x justinstall.sh
     ```bash
     ansible all -m ping -i ansible/inventory/inventory.ini
     ```
-6. Check nodes Pytohn and pip version
+6. Check nodes Python and pip version
     ```bash
     ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
     ```

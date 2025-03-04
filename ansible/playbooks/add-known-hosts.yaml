@@ -1,0 +1,9 @@
+- name: "Get key from host {{ cfg_node }}"
+  command: "ssh-keyscan -t rsa {{ hostvars[ cfg_node ].ansible_host }} | grep -v ^#"
+  register: rsa_key
+
+- name: Add key to known_hosts
+  known_hosts:
+    name: "{{ hostvars[ cfg_node ].ansible_host }}"
+    path: "{{ lookup('env', 'HOME') }}/.ssh/known_hosts"
+    key: "{{ rsa_key.stdout }}"

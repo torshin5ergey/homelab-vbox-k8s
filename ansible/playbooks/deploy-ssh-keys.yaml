@@ -1,0 +1,39 @@
+- name: Generate SSH key local
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Ensure project's .ssh directory exists"
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'HOME') }}/homelab-vbox-k8s/.ssh"
+        state: directory
+        mode: 0700
+
+    - name: Generate SSH key
+      community.crypto.openssh_keypair:
+        path: "{{ lookup('env', 'HOME') }}/homelab-vbox-k8s/.ssh/id_rsa"
+        type: rsa
+        size: 2048
+        owner: "{{ lookup('env', 'USER') }}"
+        group: "{{ lookup('env', 'USER') }}"
+      register: key_result
+
+    - name: Set public SSH key variable
+      ansible.builtin.set_fact:
+        public_ssh_key: "{{ key_result.public_key }}"
+
+    - name: Add to known_hosts
+      include_tasks:
+        file: add-known-hosts.yaml
+      vars:
+        cfg_node: "{{ item }}"
+      loop:
+        - node-master
+        - node-worker1
+        - node-worker2
+
+    - name: Copy public SSH key to remote nodes
+      vars:
+        ansible_ssh_user: vagrant
+        ansible_ssh_pass: vagrant
+      command: "ssh-copy-id -i ~/homelab-vbox-k8s/.ssh/id_rsa {{ ansible_ssh_user }}@{{ hostvars[item].ansible_host }}"
+      loop: "{{ groups['all'] }}"

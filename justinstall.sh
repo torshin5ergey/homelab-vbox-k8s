@@ -6,6 +6,11 @@ terraform init
 terraform apply -auto-approve
 cd ..
 
+# TODO: Set login with password
+# Restart and deploy SSH
+./stop_vms.sh && ./run_vms.sh
+ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/deploy-ssh-keys.yaml
+
 # Check python/pip versions
 ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
 

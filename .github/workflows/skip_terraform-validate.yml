@@ -19,7 +19,7 @@ jobs:
 
       - name: Terraform fmt
         run: terraform fmt -check
-        continue-on-error: true   
+        continue-on-error: true
 
       - name: Terraform init
         run: terraform init -input=false

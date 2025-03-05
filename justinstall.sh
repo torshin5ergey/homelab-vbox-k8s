@@ -1,3 +1,5 @@
+#! /bin/bash
+
 set -e
 
 # Setup VM nodes
@@ -6,7 +8,20 @@ terraform init
 terraform apply -auto-approve
 cd ..
 
-# TODO: Set login with password
+while true; do
+    echo "Setup login with password on VMs.Then type 'go' to continue or 'stor' to exit:"
+    read user_input
+    if [[ "$user_input" == "go" ]]; then
+        echo "Installation continued."
+        break
+    elif [[ "$user_input" == "stop" ]]; then
+        echo "Installation anceled."
+        exit 0
+    else
+        echo "Please, type 'go' or 'stop': "
+    fi
+done
+
 # Restart and deploy SSH
 ./stop_vms.sh && ./run_vms.sh
 ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/deploy-ssh-keys.yaml

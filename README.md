@@ -49,7 +49,7 @@ ansible all -m ping -i ansible/inventory/inventory.ini
 ```
 6. Check nodes Python and pip version
 ```bash
-ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
+ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install-python-pip.yaml
 ```
 
 ### Kubespray
@@ -69,7 +69,7 @@ ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini clust
 ```
 10. Get kubeconfig
 ```bash
-ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/get_kubeconfig.yaml
+ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/get-kubeconfig.yaml
 ```
 - When you're done, you can remove all created resources:
 ```bash

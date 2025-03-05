@@ -27,7 +27,7 @@ done
 ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/deploy-ssh-keys.yaml
 
 # Check python/pip versions
-ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install_python_pip.yaml
+ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/install-python-pip.yaml
 
 # Install k8s via kubespray
 git clone https://github.com/kubernetes-sigs/kubespray.git
@@ -37,4 +37,4 @@ pip install -r requirements.txt
 ansible-playbook -i $HOME/homelab-vbox-k8s/ansible/inventory/inventory.ini cluster.yml -b -v -e @ansible/vars/kubespray/k8s-cluster.yml
 ### Get kubeconfig
 cd ..
-ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/get_kubeconfig.yaml
+ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/get-kubeconfig.yaml

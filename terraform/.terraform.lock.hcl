@@ -9,6 +9,13 @@ provider "registry.terraform.io/hashicorp/external" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/local" {
+  version = "2.5.2"
+  hashes = [
+    "h1:AyjDavpTyerVRTVcQZXqMNmYeOKftDQVwvTKnIs+4h0=",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/tls" {
   version     = "4.0.6"
   constraints = "~> 4.0.6"

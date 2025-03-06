@@ -19,3 +19,9 @@ variable "username" {
   description = "Default nodes user"
   type        = string
 }
+
+variable "ssh_key_path" {
+  description = "Path to ssh private key"
+  type        = string
+  default     = "~/homelab-vbox-k8s/.ssh/id_rsa"
+}

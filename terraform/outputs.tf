@@ -1,4 +1,4 @@
-# node-name: node-ip
+# group: {node name: node ip}
 output "vm_info" {
   description = "Node names and IPs by roles"
   value = {

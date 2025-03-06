@@ -3,7 +3,7 @@ resource "virtualbox_vm" "node" {
   name   = data.external.node_names.result[tostring(count.index)]
   image  = var.base_image
   cpus   = 2
-  memory = "2048 mib"
+  memory = "2.0 gib"
 
   network_adapter {
     type           = "bridged"
@@ -24,7 +24,7 @@ locals {
   }
 }
 
-# Generate inventory
+# Generate ansible inventory
 resource "local_file" "ansible_inventory" {
   filename = "${pathexpand("~")}/homelab-vbox-k8s/ansible/inventory/inventory.ini"
   content = templatefile("${path.module}/templates/inventory.tftpl", {

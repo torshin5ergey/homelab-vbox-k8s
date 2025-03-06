@@ -1,10 +1,11 @@
 .ssh/
 
 # Terraform
-.terraform/
-terraform.tfstate
-terraform.tfstate.backup
-virtualbox.box
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/virtualbox.box
 
 # Python
 .venv

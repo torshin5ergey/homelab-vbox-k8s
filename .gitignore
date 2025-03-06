@@ -2,7 +2,7 @@
 
 # Ansible
 .ansible
-ansible/inventory/
+ansible/inventory/*
 
 # Terraform
 terraform/.terraform/

@@ -1,5 +1,8 @@
 .ssh/
 
+# Ansible
+ansible/inventory/
+
 # Terraform
 terraform/.terraform/
 terraform/*.tfstate

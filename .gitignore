@@ -1,6 +1,7 @@
 .ssh/
 
 # Ansible
+.ansible
 ansible/inventory/
 
 # Terraform

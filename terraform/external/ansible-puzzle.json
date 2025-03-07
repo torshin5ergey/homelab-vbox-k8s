@@ -1,4 +1,4 @@
 {
-    "0": "ap-node1",
-    "1": "ap-node2"
+    "0": "ap-worker-node1",
+    "1": "ap-worker-node2"
 }

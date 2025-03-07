@@ -1,5 +1,3 @@
-
-
 resource "virtualbox_vm" "node" {
   count  = var.node_count
   name   = var.node_names_file == "" ? data.external.node_names_generated.result[tostring(count.index)] : jsondecode(data.local_file.node_names_file[0].content)[tostring(count.index)]
@@ -13,7 +11,6 @@ resource "virtualbox_vm" "node" {
   }
 }
 
-# TODO: empty output and inventory file
 locals {
   # paths
   project_dir    = var.project_dir != "" ? var.project_dir : "${path.module}/.."

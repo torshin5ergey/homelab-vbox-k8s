@@ -10,6 +10,12 @@ variable "node_count" {
   }
 }
 
+variable "node_names_file" {
+  description = "Path to the node names JSON file"
+  type        = string
+  default     = ""
+}
+
 variable "base_image" {
   description = "Base VM node images"
   type        = string

@@ -1,6 +1,6 @@
 resource "virtualbox_vm" "node" {
   count  = var.node_count
-  name   = data.external.node_names.result[tostring(count.index)]
+  name   = var.node_names_file == "" ? data.external.node_names_generated.result[tostring(count.index)] : jsondecode(data.local_file.node_names_file[0].content)[tostring(count.index)]
   image  = var.base_image
   cpus   = 2
   memory = "2.0 gib"
@@ -11,6 +11,7 @@ resource "virtualbox_vm" "node" {
   }
 }
 
+# TODO: empty output and inventory file
 locals {
   masters = {
     for vm in virtualbox_vm.node :

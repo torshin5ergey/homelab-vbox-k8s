@@ -1,3 +1,5 @@
+
+
 resource "virtualbox_vm" "node" {
   count  = var.node_count
   name   = var.node_names_file == "" ? data.external.node_names_generated.result[tostring(count.index)] : jsondecode(data.local_file.node_names_file[0].content)[tostring(count.index)]
@@ -13,6 +15,11 @@ resource "virtualbox_vm" "node" {
 
 # TODO: empty output and inventory file
 locals {
+  # paths
+  project_dir    = var.project_dir != "" ? var.project_dir : "${path.module}/.."
+  ssh_key_path   = var.ssh_key_path != "" ? var.ssh_key_path : "${local.project_dir}/.ssh/id_rsa"
+  inventory_path = var.inventory_path != "" ? var.inventory_path : "${local.project_dir}/ansible/inventory/inventory.ini"
+  # node groups
   masters = {
     for vm in virtualbox_vm.node :
     vm.name => vm.network_adapter[0].ipv4_address
@@ -27,7 +34,7 @@ locals {
 
 # Generate ansible inventory
 resource "local_file" "ansible_inventory" {
-  filename = "${pathexpand("~")}/homelab-vbox-k8s/ansible/inventory/inventory.ini"
+  filename = "${local.project_dir}/ansible/inventory/inventory.ini"
   content = templatefile("${path.module}/templates/inventory.tftpl", {
     masters      = local.masters
     workers      = local.workers

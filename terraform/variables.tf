@@ -26,8 +26,20 @@ variable "username" {
   type        = string
 }
 
+variable "project_dir" {
+  description = "Path to project directory"
+  type        = string
+  default     = ""
+}
+
 variable "ssh_key_path" {
   description = "Path to ssh private key"
   type        = string
-  default     = "~/homelab-vbox-k8s/.ssh/id_rsa"
+  default     = ""
+}
+
+variable "inventory_path" {
+  description = "Path to generated ansible inventory file"
+  type        = string
+  default     = ""
 }

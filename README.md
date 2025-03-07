@@ -83,6 +83,8 @@ terraform destroy
   - [ ] set `config.ssh.insert_key = false` to `Vagrantfile` (`vagrant@ip: Permission denied (publickey)` error)
 - [ ] Add another virtualisation tool
 - [ ] `justinstall.sh`
+- [ ] Delete tls terraform provider
+- [ ] Change ansible inventory generation to output (ip known after only)
 
 ## Author
 Sergey Torshin [@torshin5ergey](https://github.com/torshin5ergey)

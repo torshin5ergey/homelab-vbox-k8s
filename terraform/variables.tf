@@ -1,7 +1,7 @@
 variable "node_count" {
   description = "Number of nodes to create"
   type        = number
-  default     = 3
+  default     = 2
   nullable    = false
 
   validation {

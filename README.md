@@ -17,13 +17,16 @@ cd homelab-vbox-k8s/
 - [Ansible]() (2.6.14)
 - [Kubespray](https://github.com/kubernetes-sigs/kubespray) (2.27.0)
 
-## Instructions
+## Quickstart
 
-### VBoxManage
+### VM Setup Methods
 
-There is Bash script `deploy_vms.sh` and Python script `deploy_vms.py`.
+#### Script-based VM Setup (Python/Bash)
 
-### Terraform
+There is a Python script `deploy_vms.py` (recommended) and a Bash script `deploy_vms.sh`.
+For Python script describe VM config with `vmconfig.yaml`
+
+#### Terraform VM Setup
 
 1. Initialize Terraform and download providers:
 ```bash

@@ -1,4 +1,4 @@
-# homelab-vbox-k8s
+# Homelab VBox Kubernetes
 
 Automated* local environment Kubernetes cluster setup in VirtualBox for DevOps and Kubernetes practice.
 
@@ -21,7 +21,7 @@ cd homelab-vbox-k8s/
 
 ### VBoxManage
 
-https://kifarunix.com/automate-virtual-machine-installation-on-virtualbox/
+There is Bash script `deploy_vms.sh` and Python script `deploy_vms.py`.
 
 ### Terraform
 
@@ -74,13 +74,6 @@ ansible-playbook -i ansible/inventory/inventory.ini ansible/playbooks/get-kubeco
 ```bash
 terraform destroy
 ```
-
-## TODO
-
-- [ ] Change vagrant box to generic distro
-  - [ ] set `config.ssh.insert_key = false` to `Vagrantfile` (`vagrant@ip: Permission denied (publickey)` error)
-- [ ] Add another virtualisation tool
-- [ ] Delete tls terraform provider
 
 ## Author
 Sergey Torshin [@torshin5ergey](https://github.com/torshin5ergey)

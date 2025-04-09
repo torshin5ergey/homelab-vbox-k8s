@@ -75,7 +75,6 @@ VBoxManage modifyvm $vm_name \
     --ioapic on \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none \
     --audio-driver none \
-    --audio-driver none \
     --usbohci on \
     --mouse usbtablet \
     --nic1 nat \

@@ -1,0 +1,24 @@
+# vmconfig.yaml
+iso_path: "/home/sergey/Downloads/ubuntu-22.04.5-live-server-amd64.iso"
+
+vm:
+  name: "ubuntu2204server-test"
+  ostype: "Ubuntu_64"
+  basefolder: "~/VirtualBox VMs"
+  hardware:
+    cpus: 2
+    memory: 2048 # MB
+    vram: 128 # MB
+    storage: 10240 # MB
+  credentials:
+    user: "admin"
+    password: "admin"
+  network:
+    nic_type: "nat"
+    # nic_type: "bridged"
+    # bridge_adapter: "wlp0s20f3"
+  advanced:
+    post_install_cmd: "shutdown -h now"
+    country: "US"
+    time_zone: "EST"
+    language: "en-US"

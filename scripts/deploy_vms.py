@@ -20,9 +20,19 @@ def load_config(config_file):
         print(f"Config file {config_file} not found")
         sys.exit()
 
+def merge_configs(common: dict, custom: dict):
+    """Recursively merge two configs (common+custom)"""
+    merged = common.copy()
+    for k, v in custom.items():
+        if isinstance(v, dict) and k in merged:
+            merged[k] = merge_configs(merged[k], v)
+        else:
+            merged[k] = v
+    return merged
+
 
 def wait_for_install(vm_name):
-    print("Installing...", end="", flush=True)
+    print(f"Installing {vm_name}...", end="", flush=True)
     while True:
         result = subprocess.run(
             ["VBoxManage", "showvminfo", vm_name, "--machinereadable"],
@@ -43,24 +53,24 @@ def create_vm(config):
     # Create and register VM
     subprocess.run([
         "VBoxManage", "createvm",
-        "--name", config["vm"]["name"],
-        "--ostype", config["vm"]["ostype"],
-        "--basefolder", config["vm"]["basefolder"],
+        "--name", config["name"],
+        "--ostype", config["ostype"],
+        "--basefolder", config["basefolder"],
         "--register"
     ], check=True)
 
     # Setup VM storage
     subprocess.run([
         "VBoxManage", "createhd",
-        "--filename", os.path.join(config["vm"]["basefolder"], config["vm"]["name"], f"{config['vm']['name']}.vdi"),
-        "--size", str(config["vm"]["hardware"]["storage"]),
+        "--filename", os.path.join(config["basefolder"], config["name"], f"{config['name']}.vdi"),
+        "--size", str(config["hardware"]["storage"]),
         "--variant", "Standard",
         "--format", "VDI"
     ], check=True)
 
     # Add SATA Controller
     subprocess.run([
-        "VBoxManage", "storagectl", config["vm"]["name"],
+        "VBoxManage", "storagectl", config["name"],
         "--name", "SATA",
         "--add", "sata",
         "--bootable", "on",
@@ -69,22 +79,22 @@ def create_vm(config):
     ])
     # Add IDE Storage Controller
     subprocess.run([
-        "VBoxManage", "storagectl", config["vm"]["name"],
+        "VBoxManage", "storagectl", config["name"],
         "--name", "IDE",
         "--add", "ide"
     ])
     # Attach SATA Controller
     subprocess.run([
-        "VBoxManage", "storageattach", config["vm"]["name"],
+        "VBoxManage", "storageattach", config["name"],
         "--storagectl", "SATA",
         "--port", "0",
         "--device", "0",
         "--type", "hdd",
-        "--medium", os.path.join(config["vm"]["basefolder"], config["vm"]["name"], f"{config['vm']['name']}.vdi")
+        "--medium", os.path.join(config["basefolder"], config["name"], f"{config['name']}.vdi")
     ])
     # Attach IDE Controller
     subprocess.run([
-        "VBoxManage", "storageattach", config["vm"]["name"],
+        "VBoxManage", "storageattach", config["name"],
         "--storagectl", "IDE",
         "--port", "0",
         "--device", "0",
@@ -94,35 +104,35 @@ def create_vm(config):
 
     # Define VM General Settings
     subprocess.run([
-        "VBoxManage", "modifyvm", config["vm"]["name"],
-        "--cpus", str(config["vm"]["hardware"]["cpus"]),
-        "--memory", str(config["vm"]["hardware"]["memory"]),
-        "--vram", str(config["vm"]["hardware"]["vram"]),
+        "VBoxManage", "modifyvm", config["name"],
+        "--cpus", str(config["hardware"]["cpus"]),
+        "--memory", str(config["hardware"]["memory"]),
+        "--vram", str(config["hardware"]["vram"]),
         "--ioapic", "on",
         "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none",
         "--audio-driver", "none",
         "--usbohci", "on",
         "--mouse", "usbtablet",
-        "--nic1", config["vm"]["network"]["nic_type"]
+        "--nic1", config["network"]["nic_type"]
     ])
 
     # VM auto install
     subprocess.run([
-        "VBoxManage", "unattended", "install", config["vm"]["name"],
-        f"--user={config['vm']['credentials']['user']}",
-        f"--password={config['vm']['credentials']['password']}",
-        f"--country={config['vm']['advanced']['country']}",
-        f"--time-zone={config['vm']['advanced']['time_zone']}",
-        f"--language={config['vm']['advanced']['language']}",
+        "VBoxManage", "unattended", "install", config["name"],
+        f"--user={config['credentials']['user']}",
+        f"--password={config['credentials']['password']}",
+        f"--country={config['advanced']['country']}",
+        f"--time-zone={config['advanced']['time_zone']}",
+        f"--language={config['advanced']['language']}",
         f"--iso={config['iso_path']}",
-        "--post-install-command", config["vm"]["advanced"]["post_install_command"],
+        "--post-install-command", config["advanced"]["post_install_command"],
         "--start-vm=gui"
     ])
 
-    wait_for_install(config["vm"]["name"])
+    wait_for_install(config["name"])
 
 if __name__ == "__main__":
-    config = load_config("./vmconfig.yaml")
+    config = load_config("./cluster-test.yaml")
 
     print("Virtual Machine Setup Parameters:")
     pp.pprint(config)
@@ -134,7 +144,12 @@ if __name__ == "__main__":
                                 strip=True
                                )
     if response in ("yes", "y", "true"):
-        create_vm(config)
+        for vm_spec in config["vms"]:
+            merged_config = merge_configs(config["common"], vm_spec)
+            print(f"\nCreating VM: {merged_config['name']}")
+            create_vm(merged_config)
+        print(f"\nCreated VMs: {config['vms']}")
+        print("\nAll VMs created successfully!")
     else:
         print("Apply canceled.")
         sys.exit()

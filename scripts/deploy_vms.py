@@ -126,7 +126,7 @@ def create_vm(config):
         f"--language={config['advanced']['language']}",
         f"--iso={config['iso_path']}",
         "--post-install-command", config["advanced"]["post_install_command"],
-        "--start-vm=gui"
+        f"--start-vm={config['advanced']['start_vm']}"
     ])
 
     wait_for_install(config["name"])

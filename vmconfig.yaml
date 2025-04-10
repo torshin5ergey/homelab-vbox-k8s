@@ -1,24 +1,64 @@
+---
 # vmconfig.yaml
-iso_path: "/home/sergey/Downloads/ubuntu-22.04.5-live-server-amd64.iso"
-
-vm:
-  name: "ubuntu2204server-test"
+common: &common
+  ## vm.ostype The OS type
+  ## Options: VBoxManage list ostypes
   ostype: "Ubuntu_64"
+  ## vm.basefolder The folder where VM files will be stored
   basefolder: "/home/sergey/VirtualBox VMs"
-  hardware:
+  ## vm.iso_path Path to the ISO image used for installation
+  iso_path: "/home/sergey/Downloads/ubuntu-22.04.5-live-server-amd64.iso"
+  ##
+  ## Hardware parameters
+  hardware: &hardware
+    ##
+    ## vm.hardware.cpus Number of CPUs
     cpus: 2
     memory: 2048 # MB
     vram: 128 # MB
     storage: 10240 # MB
-  credentials:
+  ##
+  ## OS level credentials
+  credentials: &credentials
     user: "admin"
     password: "admin"
-  network:
+  ##
+  ## Network configuration
+  network: &network
     nic_type: "nat"
     # nic_type: "bridged"
     # bridge_adapter: "wlp0s20f3"
-  advanced:
+  ##
+  ## Advanced settings
+  advanced: &advanced
     post_install_command: "shutdown -h now"
+    ## vm.advanced.start_vm How the VM will be started
+    ## Options:
+    ##   - gui
+    ##   - headless
+    start_vm: "gui"
     country: "RU"
     time_zone: "Europe/Moscow"
     language: "en-US"
+
+##
+## vms.name (required!) Name for VMs to be created
+vms:
+  ## Basic example (all settings from common)
+  ## - name: "vm_name01"
+  ##
+  ## For simple values (under &common, e.g. ostype, iso_path) just set the parameter
+  ## - name: "vm_name02"
+  ##   iso_path: "/path/to/iso"
+  ##
+  ## For nested objects (e.g. hardware, network) use the override
+  ## - name: "vm_name03"
+  ##   vm_param:
+  ##     <<: *anchor      # inheritance first
+  ##     param: new_value # then override
+  ##
+  ## For full block replacement specify the parameters again
+  ## - name: "vm_name04"
+  ##   network:
+  ##     nic_type: "hostonly"
+  - name: "ubuntu2204server"

@@ -103,7 +103,7 @@ def create_vm(config):
         "--audio-driver", "none",
         "--usbohci", "on",
         "--mouse", "usbtablet",
-        "--nic1", "nat"
+        "--nic1", config["vm"]["network"]["nic_type"]
     ])
 
     # VM auto install
@@ -111,10 +111,11 @@ def create_vm(config):
         "VBoxManage", "unattended", "install", config["vm"]["name"],
         f"--user={config['vm']['credentials']['user']}",
         f"--password={config['vm']['credentials']['password']}",
-        "--country=RU", "--time-zone='Europe/Moscow'",
-        "--language=en-US",
+        f"--country={config['vm']['advanced']['country']}",
+        f"--time-zone={config['vm']['advanced']['time_zone']}",
+        f"--language={config['vm']['advanced']['language']}",
         f"--iso={config['iso_path']}",
-        "--post-install-command", "shutdown -h now",
+        "--post-install-command", config["vm"]["advanced"]["post_install_command"],
         "--start-vm=gui"
     ])
 

@@ -113,7 +113,7 @@ def create_vm(config):
         "--audio-driver", "none",
         "--usbohci", "on",
         "--mouse", "usbtablet",
-        "--nic1", config["network"]["nic_type"]
+        "--nic1", "nat"
     ])
 
     # VM auto install
@@ -130,6 +130,15 @@ def create_vm(config):
     ])
 
     wait_for_install(config["name"])
+
+    # Post install network setup if nic_type="bridged"
+    if config["network"]["nic_type"] == "bridged":
+        print(f"Configuring bridged network for {config['name']}...")
+        subprocess.run([
+            "VBoxManage", "modifyvm", config["name"],
+            "--nic1", config["network"]["nic_type"],
+            "--bridgeadapter1", config["network"]["bridge_adapter"]
+        ])
 
 if __name__ == "__main__":
     config = load_config("./cluster-test.yaml")
@@ -148,7 +157,9 @@ if __name__ == "__main__":
             merged_config = merge_configs(config["common"], vm_spec)
             print(f"\nCreating VM: {merged_config['name']}")
             create_vm(merged_config)
-        print(f"\nCreated VMs: {config['vms']}")
+        print(f"\nCreated {len(config['vms'])} VMs:")
+        for i, vm in enumerate(config['vms'], 1):
+            print(f"{i}. {vm['name']}")
         print("\nAll VMs created successfully!")
     else:
         print("Apply canceled.")

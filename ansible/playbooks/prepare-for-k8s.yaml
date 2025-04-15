@@ -1,0 +1,139 @@
+---
+- name: Prepare for multi-node k8s setup
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Disable Swap
+      ansible.builtin.command: "swapoff -a"
+      register: result
+      changed_when: result.rc != 0
+    - name: Check result
+      ansible.builtin.command: "free -m"
+      register: result
+      changed_when: result.rc != 0
+    - name: Print result
+      ansible.builtin.debug:
+        var: result.stdout
+
+    - name: Setup ufw
+      community.general.ufw:
+        state: enabled
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto | default('tcp') }}"
+      loop:
+        - { port: "22"}
+        - { port: "6443"}
+        - { port: "2379:2380"}
+        - { port: "10250"}
+        - { port: "10259"}
+        - { port: "10257"}
+        - { port: "10256"}
+        - { port: "30000:32767"}
+        - { port: "6783", proto: "tcp"}
+        - { port: "6783", proto: "udp"}
+        - { port: "6784", proto: "udp"}
+
+    - name: Enable IPv4 packet forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: "1"
+        sysctl_file: /etc/sysctl.d/k8s.conf
+        state: present
+        reload: true
+    - name: Check result
+      ansible.builtin.command: "sysctl net.ipv4.ip_forward"
+      register: result
+      changed_when: result.rc != 0
+    - name: Print result
+      ansible.builtin.debug:
+        var: result.stdout
+
+    - name: Install common apt packages
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+        state: present
+        update_cache: true
+
+    - name: Create Docker GPG key directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Download Docker GPG key
+      ansible.builtin.get_url:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        dest: "/etc/apt/keyrings/docker.asc"
+        mode: "0644"
+
+    - name: Add Docker repository
+      ansible.builtin.copy:
+        dest: "/etc/apt/sources.list.d/docker.list"
+        content: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        mode: "0644"
+
+    - name: Install Docker from apt
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+    - name: Run and enable Docker daemon
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Create containerd default configuration
+      ansible.builtin.shell:
+        cmd: |
+          set -o pipefail
+          containerd config default | tee /etc/containerd/config.toml
+        executable: /bin/bash
+
+    - name: Configuring the systemd cgroup driver
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        insertafter: '\[plugins\."io\.containerd\.grpc\.v1\.cri"\.containerd\.runtimes\.runc\.options\]'
+        line: "            SystemdCgroup = true"
+        regexp: '^\s*SystemdCgroup\s*='
+        state: present
+
+    - name: Restart containerd
+      ansible.builtin.systemd:
+        name: containerd
+        state: restarted
+
+    - name: Download Kubernetes 1.32 apt key
+      ansible.builtin.shell:
+        cmd: "curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add Kubernetes 1.32 repository
+      ansible.builtin.copy:
+        dest: "/etc/apt/sources.list.d/kubernetes.list"
+        content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /"
+        mode: "0644"
+
+    - name: Install kubelet, kubeadm, kubectl from apt
+      ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: true
+
+    # Next install kubernetes control plane
+    # kubeadm init

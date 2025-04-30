@@ -24,7 +24,14 @@ cd homelab-vbox-k8s/
 #### Script-based VM Setup (Python/Bash)
 
 There is a Python script `deploy_vms.py` (recommended) and a Bash script `deploy_vms.sh`.
-For Python script describe VM config with `vmconfig.yaml`
+
+##### Python `deploy_vms.py`
+
+- For Python script describe VM config with `vmconfig.yaml` template
+- Run with
+```bash
+python scripts/deploy_vms.py vmconfig.yaml
+```
 
 #### Terraform VM Setup
 

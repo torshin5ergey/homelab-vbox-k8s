@@ -141,7 +141,8 @@ def create_vm(config):
         ])
 
 if __name__ == "__main__":
-    config = load_config("./cluster-test.yaml")
+    config_file = sys.argv[1]
+    config = load_config(config_file)
 
     print("Virtual Machine Setup Parameters:")
     pp.pprint(config)

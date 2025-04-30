@@ -25,13 +25,27 @@ common: &common
   ##
   ## Network configuration
   network: &network
-    nic_type: "nat"
-    # nic_type: "bridged"
-    # bridge_adapter: "wlp0s20f3"
+    ## vm.network.nic_type
+    ## Options:
+    ##   - nat
+    ##   - hostonly
+    ##   - bridged
+    nic_type: "bridged"
+    ## vm.network.bride_adapter Physical host interface for bridged networking
+    ## Required when nic_type="bridged"
+    ## Typical values:
+    ##   - enp0s3     (typical Ethernet interface)
+    ##   - wlp0s20f3  (typical WiFi interface)
+    ##   - eth0       (legacy interafce name)
+    bridge_adapter: "wlp0s20f3"
   ##
   ## Advanced settings
   advanced: &advanced
-    post_install_command: "shutdown -h now"
+    post_install_command: |
+      apt update &&
+      apt install -y openssh-server &&
+      systemctl enable ssh &&
+      shutdown -h now
     ## vm.advanced.start_vm How the VM will be started
     ## Options:
     ##   - gui

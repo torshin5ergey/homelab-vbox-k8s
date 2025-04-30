@@ -41,11 +41,9 @@ def wait_for_install(vm_name):
         )
         # Check if VM is poweroff (install completed)
         if "VMState=\"poweroff\"" in result.stdout:
-            print(f"\nVM {vm_name} has been successfully installed!")
             break
-        else:
-            time.sleep(10) # wait 10 sec
-            print(".", end="", flush=True) # immediate print to stdout (without buffering)
+        time.sleep(10) # wait 10 sec
+        print(".", end="", flush=True) # immediate print to stdout (without buffering)
 
 
 def create_vm(config):
@@ -140,6 +138,7 @@ def create_vm(config):
             "--bridgeadapter1", config["network"]["bridge_adapter"]
         ])
 
+
 if __name__ == "__main__":
     config_file = sys.argv[1]
     config = load_config(config_file)
@@ -152,15 +151,27 @@ if __name__ == "__main__":
                                 blank=True,
                                 caseSensitive=False,
                                 strip=True
-                               )
+    )
     if response in ("yes", "y", "true"):
+        total_start_time = time.time()
+        vm_install_times = []
+
         for vm_spec in config["vms"]:
             merged_config = merge_configs(config["common"], vm_spec)
             print(f"\nCreating VM: {merged_config['name']}")
+
+            vm_start_time = time.time()
             create_vm(merged_config)
+            vm_install_time = time.time() - vm_start_time
+            vm_install_times.append(vm_install_time)
+            print(f"\nVM {merged_config['name']} has been successfully installed!\nTime elapsed: {int(vm_install_time//60):02d}:{int(vm_install_time%60):02d}")
+
+        total_install_time = time.time() - total_start_time
+
         print(f"\nCreated {len(config['vms'])} VMs:")
         for i, vm in enumerate(config['vms'], 1):
-            print(f"{i}. {vm['name']}")
+            print(f"{i}. {vm['name']} in {int(vm_install_times[i-1]//60):02d}:{int(vm_install_times[i-1]%60):02d}")
+        print(f"Total time elapsed: {int(total_install_time//60):02d}:{int(total_install_time%60):02d}")
         print("\nAll VMs created successfully!")
     else:
         print("Apply canceled.")

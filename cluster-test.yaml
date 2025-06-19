@@ -16,7 +16,7 @@ common: &common
     cpus: 2
     memory: 2048 # MB
     vram: 128 # MB
-    storage: 20240 # MB
+    storage: 10120 # MB
   ##
   ## OS level credentials
   credentials: &credentials
